@@ -1,0 +1,86 @@
+<template>
+    <div>
+        <div class="text-center mt-24">
+            <p class="text-3xl font-bold">LIST BORROW</p>
+        </div>
+        <div class="flex justify-center mt-4">
+            <div class="flex flex-col justify-center">
+                <div class="overflow-x-auto">
+                    <div class="min-w-full inline-block align-middle">
+                        
+                            <table class="w-96">
+                                <thead class="border-b border-gray-200">
+                                    <tr>
+                                        <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
+                                            <div
+                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-black rounded-md hover:border-gray-200">
+                                                #
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
+                                            <div
+                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-black rounded-md hover:border-gray-200">
+                                                Load Date
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
+                                            <div
+                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-black rounded-md hover:border-gray-200">
+                                                Barrow Date
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
+                                            <div
+                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-black rounded-md hover:border-gray-200">
+                                                Book
+                                            </div>
+                                        </th>
+                                        <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
+                                            <div
+                                                class="py-1 px-2.5 inline-flex items-center border border-transparent text-sm text-black rounded-md hover:border-gray-200">
+                                                User
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="divide-y divide-gray-200 dark:divide-neutral-700"
+                                    v-for="(borrow, index) in arrayBorrow">
+                                    <tr>
+                                        <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800">
+                                            {{ index+1 }}
+                                        </td>
+                                        <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800">
+                                            {{ borrow.load_date }}
+                                        </td>
+                                        <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800">
+                                            {{ borrow.barrow_date }}
+                                        </td>
+                                        <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800">
+                                            {{ borrow.book.title }}
+                                        </td>
+                                        <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800">
+                                            {{ borrow.user.name }}
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { useBorrowStore } from '@/stores/borrowStore';
+const borrowStore = useBorrowStore()
+const { indexBorrow, arrayBorrow } = borrowStore
+indexBorrow()
+
+
+
+
+</script>
