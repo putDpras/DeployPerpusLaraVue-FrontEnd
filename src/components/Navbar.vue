@@ -107,6 +107,6 @@ watch(() => authStore.userData, (newValue) => {
   isAdmin.value = newValue && newValue.roles.name === 'owner';
 }, { immediate: true });
 
-console.log(authStore.tokenUser);
+// console.log(authStore.tokenUser);
 const router = useRoute();
 </script>

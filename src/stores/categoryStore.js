@@ -49,6 +49,7 @@ export const useCategoryStore = defineStore("category", () => {
       const { data } = await customInstance.get(`category/${id}`);
       localStorage.setItem("category", JSON.stringify(data.data));
       category.value = data.data;
+      // router.go(0);
     } catch (error) {
       console.log(error);
     }

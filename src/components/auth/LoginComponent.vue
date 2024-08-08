@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mt-[-2rem]">
         <div class="min-h-screen flex items-center justify-center w-full bg-gray-100">
             <div class="bg-white shadow-md rounded-lg px-8 py-6 max-w-md">
                 <h1 class="text-2xl font-bold text-center mb-4 text-black">Welcome Back!</h1>

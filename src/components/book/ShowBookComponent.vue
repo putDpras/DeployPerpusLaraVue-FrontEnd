@@ -1,31 +1,34 @@
 <template>
     <div>
-        <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 md:py-12">
-            <div className="grid md:grid-cols-2 gap-8 items-start">
-                <div className="flex justify-center">
-                    <img :src="bookStore.book.image" alt="Book Cover" width={400} height={600}
-                        className="rounded-lg shadow-lg" />
+        <div v-if="loading" class="flex justify-center items-center h-screen">
+            <span class="loading loading-ring loading-lg"></span>
+        </div>
+        <div v-if="bookStore.book" class="max-w-6xl mx-auto px-4 py-8 sm:px-6 md:py-12">
+            <div class="grid md:grid-cols-2 gap-8 items-start">
+                <div class="flex justify-center">
+                    <img :src="bookStore.book.image" alt="Book Cover" width="400" height="600"
+                        class="rounded-lg shadow-lg" />
                 </div>
 
                 <!-- Detail Buku -->
-                <div className="grid gap-6">
+                <div class="grid gap-6">
                     <div>
-                        <h1 className="text-3xl font-bold">{{ bookStore.book.title }}</h1>
+                        <h1 class="text-3xl font-bold">{{ bookStore.book.title }}</h1>
                     </div>
-                    <div className="prose max-w-none">
-                        <p>
+                    <div class="prose max-w-none">
+                        <p class="text-justify">
                             {{ bookStore.book.summary }}
                         </p>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div class="flex items-center gap-4">
                         <span class="badge badge-secondary">
                             in stock
                         </span>
-                        <div className="text-muted-foreground">
-                            <span className="font-medium">{{ bookStore.book.stok }}</span> copies available
+                        <div class="text-muted-foreground">
+                            <span class="font-medium">{{ bookStore.book.stok }}</span> copies available
                         </div>
                     </div>
-                    <div className="flex gap-4">
+                    <div class="flex gap-4">
                         <!-- <button class="btn btn-primary h-4">Pinjam</button> -->
 
                         <router-link v-if="isAdmin" to="/book"><button class="btn btn-error h-4"
@@ -34,7 +37,7 @@
                     </div>
 
                     <!-- Form Pinjam -->
-                    <div class="bg-white p-8 rounded shadow-md max-w-md w-full mx-auto ">
+                    <div class="bg-white p-8 rounded shadow-md max-w-sm w-full mx-auto " v-if="authStore.tokenUser != null">
                         <h2 class="text-2xl font-semibold mb-4">Form Pinjam Buku</h2>
 
                         <form action="/book" @submit.prevent="handleSubmitPinjam">
@@ -65,7 +68,7 @@
 
 
                     <!-- Form Edit -->
-                    <div class="bg-white p-8 rounded shadow-md max-w-md w-full mx-auto" v-if="isAdmin">
+                    <div class="bg-white p-8 rounded shadow-md max-w-sm mx-auto" v-if="isAdmin">
                         <h2 class="text-2xl font-semibold mb-4">Edit Buku</h2>
 
                         <form action="/book" @submit.prevent="handleSubmit">
@@ -120,7 +123,7 @@
 
 <script setup>
 import { useBookStore } from '@/stores/bookStore';
-import { ref, reactive, watch, onUnmounted } from 'vue';
+import { ref, reactive, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -128,14 +131,20 @@ const authStore = useAuthStore()
 const route = useRoute()
 const bookStore = useBookStore()
 const book_id = ref('')
-const { showBook, deleteBook, indexBook, updateBook } = bookStore
+const { showBook, deleteBook, updateBook } = bookStore
 book_id.value = route.params.id
-console.log(book_id.value);
-showBook(book_id.value)
+// console.log(book_id.value);
+// showBook(book_id.value)
+
+const loading = ref(true)
+onMounted(async () => {
+    await showBook(book_id.value);
+    loading.value = false;
+})
 
 
 const isAdmin = ref(false)
-console.log(authStore.tokenUser);
+// console.log(authStore.tokenUser);
 watch(() => authStore.userData, (newValue) => {
     isAdmin.value = newValue && newValue.roles.name === 'owner';
 }, { immediate: true });
@@ -143,9 +152,7 @@ watch(() => authStore.userData, (newValue) => {
 const handleDelete = () => {
     deleteBook(route.params.id)
 }
-onUnmounted(() => {
-    indexBook()
-})
+
 
 import { useCategoryStore } from '@/stores/categoryStore';
 const categoryStore = useCategoryStore()

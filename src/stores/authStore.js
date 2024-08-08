@@ -3,6 +3,11 @@ import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
 import customInstance from "@/api";
 export const useAuthStore = defineStore("auth", () => {
+  const tokenExpiry = ref(
+    localStorage.getItem("tokenExpiry")
+      ? JSON.parse(localStorage.getItem("tokenExpiry"))
+      : null
+  );
   const router = useRouter();
   const response = ref("");
   const tokenUser = ref(
@@ -29,7 +34,9 @@ export const useAuthStore = defineStore("auth", () => {
       const { token, user } = data;
       localStorage.setItem("token", JSON.stringify(token));
       localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("tokenExpiry", Date.now() + 60 * 60 * 1000);
 
+      tokenExpiry.value = Date.now() + 60 * 60 * 1000;
       tokenUser.value = token;
       userData.value = user;
 
@@ -72,13 +79,20 @@ export const useAuthStore = defineStore("auth", () => {
 
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem("tokenExpiry");
 
+      tokenExpiry.value = null;
       tokenUser.value = null;
       userData.value = null;
 
       router.push("/");
     } catch (error) {
       console.log(error);
+    }
+  };
+  const checkTokenExpiry = async () => {
+    if (tokenExpiry.value && Date.now() >= tokenExpiry) {
+      await logoutUser();
     }
   };
 
@@ -93,7 +107,6 @@ export const useAuthStore = defineStore("auth", () => {
     } catch (error) {
       console.log(error);
     }
-    
   };
 
   const createOrUpdateProfile = async (inputData) => {
@@ -102,7 +115,7 @@ export const useAuthStore = defineStore("auth", () => {
         headers: { Authorization: `Bearer ${tokenUser.value}` },
       });
       // console.log(response);
-      alert("sukses")
+      alert("sukses");
     } catch (error) {
       console.log(error);
     }
@@ -119,5 +132,7 @@ export const useAuthStore = defineStore("auth", () => {
     getUser,
     response,
     createOrUpdateProfile,
+    checkTokenExpiry,
+    tokenExpiry,
   };
 });

@@ -1,15 +1,26 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import NavbarComponent from '@/components/Navbar.vue'
+import { useAuthStore } from './stores/authStore';
+import { onMounted } from 'vue';
+const authStore = useAuthStore();
+const {checkTokenExpiry, tokenExpiry} = authStore;
+// console.log(authStore.tokenExpiry);
+const intervalSession = setInterval(checkTokenExpiry, 60000)
+checkTokenExpiry();
+
+onMounted(() => {
+  clearInterval(intervalSession);
+})
 </script>
 
 <template>
-  <NavbarComponent/>
+  <NavbarComponent />
   <RouterView v-slot="{ Component, route }">
-      <transition name="scale" mode="out-in">
-        <component :is="Component" :key="route.path" />
-      </transition>
-    </RouterView>
+    <transition name="scale" mode="out-in">
+      <component :is="Component" :key="route.path" />
+    </transition>
+  </RouterView>
 </template>
 
 <style scoped>
@@ -24,4 +35,3 @@ import NavbarComponent from '@/components/Navbar.vue'
   transform: scale(0.9);
 }
 </style>
-

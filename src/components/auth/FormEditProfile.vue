@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <body class="bg-gray-100 min-h-screen flex items-center justify-center ">
+        <body class="bg-gray-100 lg:min-h-screen flex items-center justify-center">
 
             <div class="bg-white p-8 rounded shadow-md max-w-md w-full mx-auto ">
                 <h2 class="text-2xl font-semibold mb-4">Profile</h2>

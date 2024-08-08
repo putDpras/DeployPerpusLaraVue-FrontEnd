@@ -2,16 +2,19 @@
     <div class="mb-16 mt-24">
         <div v-if="isAdmin">
             <p class="text-center mt-16 text-3xl font-bold">Tambah Category</p>
-            <form class="flex flex-col justify-center mx-64 gap-2 my-2" action="/role" @submit.prevent="handleSubmit">
-                <span>Category Name</span>
-                <label class="input input-bordered flex items-center gap-2">
-                    <input type="text" class="grow" placeholder="Name" required v-model="category.name" />
+            <form class="flex flex-col justify-center mx-32 gap-2 my-2" action="/role" @submit.prevent="handleSubmit">
+                <span class="text-center">Category Name</span>
+                <label class="input input-bordered flex items-center gap-2 ">
+                    <input type="text" class="grow " placeholder="Name" required v-model="category.name" />
                 </label>
-                <input type="submit" class="btn btn-primary" value="Tambah Category">
+                <input type="submit" class="btn btn-primary" value="Tambah">
             </form>
         </div>
         <div class="text-center mt-16">
             <p class="text-3xl font-bold">LIST CATEGORY</p>
+        </div>
+        <div v-if="loading" class="flex justify-center items-center h-screen">
+            <span class="loading loading-ring loading-lg"></span>
         </div>
         <div class="flex justify-center mt-4">
             <div class="flex flex-col w-[32rem]">
@@ -59,12 +62,12 @@
 
         <div v-if="isEditState">
             <p class="text-center mt-16 text-3xl font-bold">Edit Category "{{ categoryToEdit.value.name }}"</p>
-            <form class="flex flex-col justify-center mx-64 gap-2 my-2" action="/role" @submit.prevent="handleEdit(categoryToEdit.value.id)">
+            <form class="flex flex-col justify-center mx-32 gap-2 my-2" action="/role" @submit.prevent="handleEdit(categoryToEdit.value.id)">
                 <span>Category Name</span>
                 <label class="input input-bordered flex items-center gap-2">
                     <input type="text" class="grow" placeholder="Name" required v-model="categoryToEdit.value.name" />
                 </label>
-                <input type="submit" class="btn btn-primary" value="Ubah Nama Category">
+                <input type="submit" class="btn btn-primary" value="Ubah">
             </form>
         </div>
 
@@ -79,7 +82,14 @@ const authStore = useAuthStore()
 const categoryStore = useCategoryStore()
 const { userData } = authStore
 const { indexCategory, storeCategory, deleteCategory, updateCategory } = categoryStore
-indexCategory()
+
+
+
+const loading  = ref(true)
+onMounted(async () => {
+    await indexCategory();
+    loading.value = false;
+})
 
 // console.log(genreStore.arrayGenre);
 
@@ -105,7 +115,7 @@ const handleEdit = (role_id) => {
     updateCategory(formData, role_id)
 }
 
-console.log(authStore.tokenUser);
+// console.log(authStore.tokenUser);
 watch(() => authStore.userData, (newValue) => {
     isAdmin.value = newValue && newValue.roles.name === 'owner';
 }, { immediate: true });
@@ -115,7 +125,7 @@ const categoryToEdit = reactive({})
 const handleShowEdit = (role_id) => {
     isEditState.value = true;
     idCategoryToEdit.value = role_id
-    console.log(role_id);
+    // console.log(role_id);
     for (let i=0; i < categoryStore.arrayCategory.length; i++) {
         if (categoryStore.arrayCategory[i].id === role_id) {
             categoryToEdit.value = categoryStore.arrayCategory[i]

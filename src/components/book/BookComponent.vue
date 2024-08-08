@@ -5,8 +5,11 @@
                     Data</button></router-link>
         </div>
         <div v-else class="flex mt-28"></div>
-        <div class="grid md:grid-cols-3 xl:grid-cols-4 mt-4 mx-4 justify-center gap-8">
-            <div class="card bg-base-100 w-64 shadow-xl" v-for="book in arrayBook">
+        <div v-if="loading" class="flex justify-center items-center h-screen">
+            <span class="loading loading-ring loading-lg"></span>
+        </div>
+        <div v-if="bookStore.arrayBook" class="grid md:grid-cols-3 xl:grid-cols-4 mt-4 mx-4 justify-center gap-8">
+            <div class="card bg-base-100 w-64 shadow-xl" v-for="(book, key) in bookStore.arrayBook">
                 <figure class="h-64">
                     <img :src="book.image" alt="Shoes" />
                 </figure>
@@ -31,14 +34,20 @@
 import { useAuthStore } from '@/stores/authStore';
 import { useBookStore } from '@/stores/bookStore';
 import { onMounted, ref, watch } from 'vue';
+
 const bookStore = useBookStore()
 const authStore = useAuthStore()
 
-const { indexBook, arrayBook } = bookStore;
-indexBook()
+const { indexBook } = bookStore;
 
-const isAdmin = ref(false)
-console.log(authStore.tokenUser);
+const loading = ref(true)
+const isAdmin = ref(false);
+
+onMounted(async () => {
+    await bookStore.indexBook();
+    loading.value = false
+})
+
 watch(() => authStore.userData, (newValue) => {
     isAdmin.value = newValue && newValue.roles.name === 'owner';
 }, { immediate: true });

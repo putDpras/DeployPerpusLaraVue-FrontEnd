@@ -2,18 +2,21 @@
     <div class="mb-16 mt-24">
         <div>
             <p class="text-center mt-16 text-3xl font-bold">Tambah Role</p>
-            <form class="flex flex-col justify-center mx-64 gap-2 my-2" action="/role" @submit.prevent="handleSubmit">
-                <span>Role Name</span>
+            <form class="flex flex-col justify-center mx-32 gap-2 my-2" action="/role" @submit.prevent="handleSubmit">
+                <span class="text-center">Role Name</span>
                 <label class="input input-bordered flex items-center gap-2">
                     <input type="text" class="grow" placeholder="Name" required v-model="userRole.name" />
                 </label>
-                <input type="submit" class="btn btn-primary" value="Tambah Role">
+                <input type="submit" class="btn btn-primary" value="Tambah">
             </form>
         </div>
         <div class="text-center mt-16">
             <p class="text-3xl font-bold">LIST ROLE</p>
         </div>
-        <div class="flex justify-center mt-4">
+        <div v-if="loading" class="flex justify-center items-center h-screen">
+            <span class="loading loading-ring loading-lg"></span>
+        </div>
+        <div v-if="userRoleStore.arrayUserRole" class="flex justify-center mt-4">
             <div class="flex flex-col w-[32rem]">
                 <div class="overflow-x-auto">
                     <div class="min-w-full inline-block align-middle">
@@ -59,12 +62,12 @@
 
         <div v-if="isEditState">
             <p class="text-center mt-16 text-3xl font-bold">Edit Role "{{ roleToEdit.value.name }}"</p>
-            <form class="flex flex-col justify-center mx-64 gap-2 my-2" action="/role" @submit.prevent="handleEdit(roleToEdit.value.id)">
+            <form class="flex flex-col justify-center mx-32 gap-2 my-2" action="/role" @submit.prevent="handleEdit(roleToEdit.value.id)">
                 <span>Role Name</span>
                 <label class="input input-bordered flex items-center gap-2">
                     <input type="text" class="grow" placeholder="Name" required v-model="roleToEdit.value.name" />
                 </label>
-                <input type="submit" class="btn btn-primary" value="Ubah Nama Role">
+                <input type="submit" class="btn btn-primary" value="Ubah">
             </form>
         </div>
 
@@ -78,9 +81,14 @@ const authStore = useAuthStore()
 const userRoleStore = useUserRoleStore()
 const { userData } = authStore
 const { indexUserRole, storeUserRole, deleteUserRole, updateUserRole } = userRoleStore
-indexUserRole()
+
 
 // console.log(genreStore.arrayGenre);
+const loading  = ref(true)
+onMounted(async () => {
+    await indexUserRole();
+    loading.value = false;
+})
 
 const isAdmin = ref(false)
 const userRole = reactive({
@@ -104,7 +112,7 @@ const handleEdit = (role_id) => {
     updateUserRole(formData, role_id)
 }
 
-console.log(authStore.tokenUser);
+// console.log(authStore.tokenUser);
 watch(() => authStore.userData, (newValue) => {
     isAdmin.value = newValue && newValue.roles.name === 'owner';
 }, { immediate: true });

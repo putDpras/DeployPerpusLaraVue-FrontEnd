@@ -1,6 +1,9 @@
 <template>
     <div class="flex justify-center mt-24 mb-16">
-        <div class="p-5 border rounded text-center text-gray-500 max-w-sm">
+        <div v-if="loading" class="flex justify-center items-center h-screen">
+            <span class="loading loading-ring loading-lg"></span>
+        </div>
+        <div v-if="!loading" class="p-5 border rounded text-center text-gray-500 max-w-sm">
             <!-- <img class="w-32 h-32 rounded-full mx-auto" src="https://loremflickr.com/320/320/girl" alt=""> -->
 
             <svg xmlns="http://www.w3.org/2000/svg" class=" h-36 w-36 rounded-full mx-auto bg-slate-800"
@@ -31,9 +34,15 @@
 </template>
 <script setup>
 import { useAuthStore } from '@/stores/authStore';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 const authStore = useAuthStore()
 const { userData, getUser } = authStore
-getUser()
-console.log(userData.profile);
+
+const loading = ref(true);
+onMounted(async () => {
+    await getUser();
+    loading.value = false;
+})
+
+// console.log(userData.profile);
 </script>

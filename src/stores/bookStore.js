@@ -16,15 +16,17 @@ export const useBookStore = defineStore("book", () => {
       ? JSON.parse(localStorage.getItem("book"))
       : null
   );
+  const loading = ref(false);
   const indexBook = async () => {
     try {
+      loading.value = true;
       const { data } = await customInstance.get("book");
-      // console.log(data);
-
       localStorage.setItem("arrayBook", JSON.stringify(data.data));
       arrayBook.value = data.data;
     } catch (error) {
       console.log(error);
+    } finally{
+      loading.value = false;
     }
   };
   const authStore = useAuthStore();
@@ -32,8 +34,8 @@ export const useBookStore = defineStore("book", () => {
 
   const storeBook = async (inputData) => {
     try {
-      console.log(authStore.tokenUser);
-      console.log(inputData);
+      // console.log(authStore.tokenUser);
+      // console.log(inputData);
       const response = await customInstance.post("book", inputData, {
         headers: { Authorization: `Bearer ${tokenUser}` },
       });
@@ -96,5 +98,6 @@ export const useBookStore = defineStore("book", () => {
     book,
     updateBook,
     deleteBook,
+    loading
   };
 });

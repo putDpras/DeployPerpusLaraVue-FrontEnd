@@ -3,12 +3,15 @@
         <div class="text-center mt-24">
             <p class="text-3xl font-bold">LIST BORROW</p>
         </div>
-        <div class="flex justify-center mt-4">
-            <div class="flex flex-col justify-center">
-                <div class="overflow-x-auto">
+        <div v-if="loading" class="flex justify-center items-center h-screen">
+            <span class="loading loading-ring loading-lg"></span>
+        </div>
+        <!-- <div class="flex justify-center mt-4"> -->
+            <div v-if="borrowStore.arrayBorrow" class="flex flex-col justify-center mt-4 xl:mx-32 md:mx-12">
+                <div class="overflow-x-auto min-h-[460px]">
                     <div class="min-w-full inline-block align-middle">
-                        
-                            <table class="w-96">
+                        <div class="overflow-hidden">
+                            <table class="min-w-full">
                                 <thead class="border-b border-gray-200">
                                     <tr>
                                         <th scope="col" class="py-1 group text-start font-normal focus:outline-none">
@@ -66,21 +69,29 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
 <script setup>
 import { useBorrowStore } from '@/stores/borrowStore';
+import { onMounted, onUpdated, ref } from 'vue';
 const borrowStore = useBorrowStore()
 const { indexBorrow, arrayBorrow } = borrowStore
-indexBorrow()
 
+const loading  = ref(true)
 
-
+onMounted(async () => {
+    await indexBorrow();
+    loading.value = false
+})
+onUpdated(async () => {
+    await indexBorrow();
+    loading.value = false
+})
 
 </script>
