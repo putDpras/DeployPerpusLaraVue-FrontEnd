@@ -91,8 +91,16 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
   const checkTokenExpiry = async () => {
-    if (tokenExpiry.value && Date.now() >= tokenExpiry) {
-      await logoutUser();
+    // console.log(tokenExpiry.value);
+    // console.log(Date.now());
+    if (tokenExpiry.value && Date.now() >= tokenExpiry.value) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("tokenExpiry");
+
+      tokenExpiry.value = null;
+      tokenUser.value = null;
+      userData.value = null;
     }
   };
 

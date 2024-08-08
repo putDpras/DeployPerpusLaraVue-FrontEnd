@@ -6,11 +6,11 @@ import { onMounted } from 'vue';
 const authStore = useAuthStore();
 const {checkTokenExpiry, tokenExpiry} = authStore;
 // console.log(authStore.tokenExpiry);
-const intervalSession = setInterval(checkTokenExpiry, 60000)
-checkTokenExpiry();
+const intervalSession = setInterval(checkTokenExpiry(), 6000)
+// checkTokenExpiry();
 
-onMounted(() => {
-  clearInterval(intervalSession);
+onMounted(async () => {
+  await clearInterval(intervalSession);
 })
 </script>
 
