@@ -8,7 +8,7 @@
         <div v-if="loading" class="flex justify-center items-center h-screen">
             <span class="loading loading-ring loading-lg"></span>
         </div>
-        <div v-if="bookStore.arrayBook" class="grid md:grid-cols-3 xl:grid-cols-4 mt-4 mx-4 justify-center gap-8">
+        <div v-if="!loading" class="grid md:grid-cols-3 xl:grid-cols-4 mt-4 mx-4 justify-center gap-8">
             <div class="card bg-base-100 w-64 shadow-xl" v-for="(book, key) in bookStore.arrayBook">
                 <figure class="h-64">
                     <img :src="book.image" alt="Shoes" />

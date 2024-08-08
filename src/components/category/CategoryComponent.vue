@@ -16,7 +16,7 @@
         <div v-if="loading" class="flex justify-center items-center h-screen">
             <span class="loading loading-ring loading-lg"></span>
         </div>
-        <div v-if="categoryStore.arrayCategory" class="flex justify-center mt-4">
+        <div v-if="!loading" class="flex justify-center mt-4">
             <div class="flex flex-col w-[32rem]">
                 <div class="overflow-x-auto">
                     <div class="min-w-full inline-block align-middle">

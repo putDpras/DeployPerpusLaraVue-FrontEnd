@@ -3,7 +3,7 @@
         <div v-if="loading" class="flex justify-center items-center h-screen">
             <span class="loading loading-ring loading-lg"></span>
         </div>
-        <div v-if="bookStore.book" class="max-w-6xl mx-auto px-4 py-8 sm:px-6 md:py-12">
+        <div v-if="!loading" class="max-w-6xl mx-auto px-4 py-8 sm:px-6 md:py-12">
             <div class="grid md:grid-cols-2 gap-8 items-start">
                 <div class="flex justify-center">
                     <img :src="bookStore.book.image" alt="Book Cover" width="400" height="600"
