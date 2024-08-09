@@ -4,7 +4,7 @@
         <div v-if="loading" class="flex justify-center items-center h-screen">
             <span class="loading loading-ring loading-lg"></span>
         </div>
-        <div v-if="categoryStore.category">
+        <div v-if="!loading">
             <section>
                 <span class="flex justify-center text-3xl my-4 font-bold mt-24">List Buku dengan Category {{
                     categoryStore.category.name }}</span>
