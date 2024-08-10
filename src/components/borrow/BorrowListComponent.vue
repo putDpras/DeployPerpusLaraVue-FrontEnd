@@ -79,12 +79,14 @@
 
 <script setup>
 import { useBorrowStore } from '@/stores/borrowStore';
+import { useAuthStore } from '@/stores/authStore';
 import { onMounted, onUpdated, ref } from 'vue';
 const borrowStore = useBorrowStore()
 const { indexBorrow, arrayBorrow } = borrowStore
 
-const loading  = ref(true)
-
+const loading  = ref(true);
+const authStore = useAuthStore();
+const {getUser} = authStore;
 onMounted(async () => {
     await indexBorrow();
     loading.value = false

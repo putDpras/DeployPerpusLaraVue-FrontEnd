@@ -64,7 +64,9 @@ export const useAuthStore = defineStore("auth", () => {
       isError.value = false;
       errMsg.value = "";
 
-      router.push("/login");
+      setTimeout(function() {
+        router.go("/");
+        },1500)
     } catch (error) {
       console.log(error);
       isError.value = true;
@@ -86,8 +88,9 @@ export const useAuthStore = defineStore("auth", () => {
       tokenExpiry.value = null;
       tokenUser.value = null;
       userData.value = null;
-
-      router.push("/");
+      setTimeout(function() {
+        router.go("/");
+        },1500)
     } catch (error) {
       console.log(error);
       isError.value = true;

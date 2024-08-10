@@ -36,7 +36,7 @@ export const useBorrowStore = defineStore("borrow", () => {
       const { data } = await customInstance.post("borrow", inputData, {
         headers: { Authorization: `Bearer ${tokenUser}` },
       });
-      router.push('/book')
+      router.push("/book");
     } catch (error) {
       console.log(error);
     }
@@ -45,6 +45,6 @@ export const useBorrowStore = defineStore("borrow", () => {
     indexBorrow,
     arrayBorrow,
     borrow,
-    createOrUpdateBorrow
+    createOrUpdateBorrow,
   };
 });
