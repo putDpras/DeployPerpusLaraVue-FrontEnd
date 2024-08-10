@@ -98,18 +98,63 @@ const userRole = reactive({
 const isEditState = ref(false)
 const idRoleToEdit = ref('')
 
-const handleSubmit = () => {
-    storeUserRole(userRole);
+import { useToast } from 'vue-toastification';
+const toast = useToast();
+
+const handleSubmit = async () => {
+    await storeUserRole(userRole);
+    toast.success("Role ditambah", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
-const handleDelete = (role_id) => {
-    deleteUserRole(role_id);
+const handleDelete = async (role_id) => {
+    await deleteUserRole(role_id);
+    toast.success("Role dihapus", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
-const handleEdit = (role_id) => {
+const handleEdit = async (role_id) => {
     let formData = new FormData
     formData.append('name', roleToEdit.value.name)
-    updateUserRole(formData, role_id)
+    await updateUserRole(formData, role_id)
+    toast.success("Role diubah", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
 // console.log(authStore.tokenUser);

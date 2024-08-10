@@ -68,8 +68,9 @@ const handleUpload = (e) => {
     const selectImage = e.target.files[0];
     book.image = selectImage
 }
-
-const handleSubmit = () => {
+import { useToast } from 'vue-toastification';
+const toast = useToast();
+const handleSubmit = async () => {
     try {
         let formData = new FormData
 
@@ -79,7 +80,21 @@ const handleSubmit = () => {
         formData.append('category_id', book.category_id)
         formData.append('image', book.image)
         // console.log(book);
-        storeBook(formData)
+        await storeBook(formData)
+        toast.success("Buku ditambahkan", {
+            position: "top-right",
+            timeout: 3005,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+        });
     } catch (error) {
         console.log(error);
     }

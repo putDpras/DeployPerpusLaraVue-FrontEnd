@@ -37,7 +37,8 @@
                     </div>
 
                     <!-- Form Pinjam -->
-                    <div class="bg-white p-8 rounded shadow-md max-w-sm w-full mx-auto " v-if="authStore.tokenUser != null">
+                    <div class="bg-white p-8 rounded shadow-md max-w-sm w-full mx-auto "
+                        v-if="authStore.tokenUser != null">
                         <h2 class="text-2xl font-semibold mb-4">Form Pinjam Buku</h2>
 
                         <form action="/book" @submit.prevent="handleSubmitPinjam">
@@ -149,8 +150,25 @@ watch(() => authStore.userData, (newValue) => {
     isAdmin.value = newValue && newValue.roles.name === 'owner';
 }, { immediate: true });
 
-const handleDelete = () => {
-    deleteBook(route.params.id)
+import { useToast } from 'vue-toastification';
+const toast = useToast();
+
+const handleDelete = async () => {
+    await deleteBook(route.params.id)
+    toast.success("Buku dihapus", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
 
@@ -168,7 +186,7 @@ const handleUpload = (e) => {
     bookToUpdate.image = selectImage
 }
 
-const handleSubmit = () => {
+const handleSubmit = async () => {
     try {
         let formData = new FormData
 
@@ -178,7 +196,21 @@ const handleSubmit = () => {
         formData.append('category_id', bookStore.book.category_id)
         formData.append('image', bookToUpdate.image)
         // console.log(book);
-        updateBook(formData, route.params.id)
+        await updateBook(formData, route.params.id)
+        toast.success("Buku diupdate", {
+            position: "top-right",
+            timeout: 3005,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+        });
     } catch (error) {
         console.log(error);
     }
@@ -188,19 +220,34 @@ const handleSubmit = () => {
 
 import { useBorrowStore } from '@/stores/borrowStore';
 const borrowStore = useBorrowStore()
-const {createOrUpdateBorrow} = borrowStore
+const { createOrUpdateBorrow } = borrowStore
 const inputData = reactive({
-    load_date : null,
-    barrow_date : null,
-    book_id : null
+    load_date: null,
+    barrow_date: null,
+    book_id: null
 })
-const handleSubmitPinjam = () => {
+const handleSubmitPinjam = async () => {
     try {
-        let formData = new FormData 
+        let formData = new FormData
         formData.append('load_date', inputData.load_date)
         formData.append('barrow_date', inputData.barrow_date)
         formData.append('book_id', bookStore.book.id)
-        createOrUpdateBorrow(formData)
+        await createOrUpdateBorrow(formData)
+        
+        toast.success("Buku Dipinjam", {
+            position: "top-right",
+            timeout: 3005,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+        });
     } catch (error) {
         console.log(error);
     }

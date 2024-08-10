@@ -91,6 +91,8 @@ onMounted(async () => {
     loading.value = false;
 })
 
+
+
 // console.log(genreStore.arrayGenre);
 
 const isAdmin = ref(false)
@@ -98,21 +100,66 @@ const category = reactive({
     name: '',
 })
 
+import { useToast } from 'vue-toastification';
+const toast = useToast();
+
 const isEditState = ref(false)
 const idCategoryToEdit = ref('')
 
-const handleSubmit = () => {
-    storeCategory(category);
+const handleSubmit = async () => {
+    await storeCategory(category);
+    toast.success("Category ditambahkan", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
-const handleDelete = (role_id) => {
-    deleteCategory(role_id);
+const handleDelete = async (category_id) => {
+    await deleteCategory(category_id);
+    toast.success("Category dihapus", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
-const handleEdit = (role_id) => {
+const handleEdit = async (category_id) => {
     let formData = new FormData
     formData.append('name', categoryToEdit.value.name)
-    updateCategory(formData, role_id)
+    await updateCategory(formData, category_id)
+    toast.success("Category diubah", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
 // console.log(authStore.tokenUser);
@@ -122,12 +169,12 @@ watch(() => authStore.userData, (newValue) => {
 
 const categoryToEdit = reactive({})
 
-const handleShowEdit = (role_id) => {
+const handleShowEdit = (category_id) => {
     isEditState.value = true;
-    idCategoryToEdit.value = role_id
+    idCategoryToEdit.value = category_id
     // console.log(role_id);
     for (let i=0; i < categoryStore.arrayCategory.length; i++) {
-        if (categoryStore.arrayCategory[i].id === role_id) {
+        if (categoryStore.arrayCategory[i].id === category_id) {
             categoryToEdit.value = categoryStore.arrayCategory[i]
         }
     }

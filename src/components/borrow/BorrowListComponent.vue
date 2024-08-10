@@ -7,7 +7,7 @@
             <span class="loading loading-ring loading-lg"></span>
         </div>
         <!-- <div class="flex justify-center mt-4"> -->
-            <div v-if="borrowStore.arrayBorrow" class="flex flex-col justify-center mt-4 xl:mx-32 md:mx-12">
+            <div v-if="!loading" class="flex flex-col justify-center mt-4 xl:mx-32 md:mx-12">
                 <div class="overflow-x-auto min-h-[460px]">
                     <div class="min-w-full inline-block align-middle">
                         <div class="overflow-hidden">
@@ -48,7 +48,7 @@
                                 </thead>
 
                                 <tbody class="divide-y divide-gray-200 dark:divide-neutral-700"
-                                    v-for="(borrow, index) in arrayBorrow">
+                                    v-for="(borrow, index) in borrowStore.arrayBorrow">
                                     <tr>
                                         <td class="p-3 whitespace-nowrap text-sm font-medium text-gray-800">
                                             {{ index+1 }}
@@ -89,6 +89,7 @@ onMounted(async () => {
     await indexBorrow();
     loading.value = false
 })
+
 onUpdated(async () => {
     await indexBorrow();
     loading.value = false

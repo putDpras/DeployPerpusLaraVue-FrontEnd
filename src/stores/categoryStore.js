@@ -36,8 +36,10 @@ export const useCategoryStore = defineStore("category", () => {
       const respone = await customInstance.post("/category", inputData, {
         headers: { Authorization: `Bearer ${authStore.tokenUser}` },
       });
-      alert("Barhasil Menambah Data");
-      router.go(0);
+      // alert("Barhasil Menambah Data");
+      setTimeout(function() {
+        router.go(0);
+        },1500)
       // console.log(inputData);
     } catch (error) {
       console.log(error);
@@ -64,8 +66,10 @@ export const useCategoryStore = defineStore("category", () => {
           headers: { Authorization: `Bearer ${authStore.tokenUser}` },
         }
       );
-      alert("Barhasil Mengubah Data");
-      router.go(0);
+      // alert("Barhasil Mengubah Data");
+      setTimeout(function() {
+        router.go(0);
+        },1500)
     } catch (error) {
       console.log(error);
     }
@@ -80,8 +84,10 @@ export const useCategoryStore = defineStore("category", () => {
           headers: { Authorization: `Bearer ${authStore.tokenUser}` },
         }
       );
-      alert("Barhasil Menghapus Data");
-      router.go(0);
+      // alert("Barhasil Menghapus Data");
+      setTimeout(function() {
+        router.go(0);
+        },1500)
     } catch (error) {
       console.log(error);
     }

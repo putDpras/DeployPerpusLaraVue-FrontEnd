@@ -36,7 +36,6 @@ export const useBorrowStore = defineStore("borrow", () => {
       const { data } = await customInstance.post("borrow", inputData, {
         headers: { Authorization: `Bearer ${tokenUser}` },
       });
-      alert("Sukses Pinjam")
       router.push('/book')
     } catch (error) {
       console.log(error);

@@ -12,15 +12,14 @@
                             placeholder="your@email.com" required v-model="userInput.email">
                     </div>
                     <div class="mb-4">
-                        <label for="password"
-                            class="block text-sm font-medium text-gray-700  mb-2">Password</label>
+                        <label for="password" class="block text-sm font-medium text-gray-700  mb-2">Password</label>
                         <input type="password" id="password"
                             class="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                             placeholder="Enter your password" required v-model="userInput.password">
                     </div>
                     <div class="flex items-center justify-between mb-4">
 
-                        <router-link  to="/register"
+                        <router-link to="/register"
                             class="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create
                             Account</router-link>
                     </div>
@@ -42,9 +41,45 @@ const userInput = reactive({
 
 const authStore = useAuthStore()
 
-const { loginUser } = authStore
+const { loginUser, isError, errMsg } = authStore
 
-const handleAuth = () => {
-    loginUser(userInput)
+import { useToast } from 'vue-toastification';
+const toast = useToast();
+
+const handleAuth = async () => {
+    await loginUser(userInput)
+    // console.log(errMsg);
+    if (isError) {
+        toast.error("Email Atau Password Salah", {
+            position: "top-right",
+            timeout: 3005,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+        })
+    } else {
+        toast.success("Login Berhasil", {
+            position: "top-right",
+            timeout: 3005,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 0.6,
+            showCloseButtonOnHover: false,
+            hideProgressBar: true,
+            closeButton: "button",
+            icon: true,
+            rtl: false
+        });
+    }
+
 }
 </script>

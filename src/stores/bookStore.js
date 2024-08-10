@@ -17,6 +17,8 @@ export const useBookStore = defineStore("book", () => {
       : null
   );
   const loading = ref(false);
+  const isError = ref(false);
+
   const indexBook = async () => {
     try {
       loading.value = true;
@@ -40,11 +42,13 @@ export const useBookStore = defineStore("book", () => {
         headers: { Authorization: `Bearer ${tokenUser}` },
       });
       indexBook()
-      alert("Barhasil Menambahkan Data");
+      // alert("Barhasil Menambahkan Data");
+      isError.value = false
       router.push("/book");
     } catch (error) {
-      console.log(error);
-      console.log(tokenUser.value);
+      // console.log(error);
+      // console.log(tokenUser.value);
+      isError.value = true
     }
   };
   const showBook = async (id) => {
@@ -68,10 +72,12 @@ export const useBookStore = defineStore("book", () => {
           headers: { Authorization: `Bearer ${tokenUser}` },
         }
       );
-      alert("Barhasil Mengubah Data");
+      // alert("Barhasil Mengubah Data");
+      isError.value = false
       router.push("/book");
     } catch (error) {
       console.log(error);
+      isError.value = true
     }
   };
 
@@ -84,10 +90,12 @@ export const useBookStore = defineStore("book", () => {
           headers: { Authorization: `Bearer ${tokenUser}` },
         }
       );
-      alert("Barhasil Menghapus Data");
+      // alert("Barhasil Menghapus Data");
+      isError.value = false
       router.push("/book");
     } catch (error) {
-      console.log(error);;
+      console.log(error);
+      isError.value = true
     }
   };
   return {
@@ -98,6 +106,7 @@ export const useBookStore = defineStore("book", () => {
     book,
     updateBook,
     deleteBook,
-    loading
+    loading,
+    isError
   };
 });

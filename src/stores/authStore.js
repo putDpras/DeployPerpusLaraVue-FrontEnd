@@ -67,6 +67,8 @@ export const useAuthStore = defineStore("auth", () => {
       router.push("/login");
     } catch (error) {
       console.log(error);
+      isError.value = true;
+      errMsg.value = "Periksa Data Kembali";
     }
   };
 
@@ -88,6 +90,7 @@ export const useAuthStore = defineStore("auth", () => {
       router.push("/");
     } catch (error) {
       console.log(error);
+      isError.value = true;
     }
   };
   const checkTokenExpiry = async () => {
@@ -123,9 +126,11 @@ export const useAuthStore = defineStore("auth", () => {
         headers: { Authorization: `Bearer ${tokenUser.value}` },
       });
       // console.log(response);
-      alert("sukses");
+      // alert("sukses");
+      isError.value = false;
     } catch (error) {
       console.log(error);
+      isError.value = true;
     }
   };
 

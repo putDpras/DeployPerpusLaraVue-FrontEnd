@@ -93,9 +93,27 @@ import { ref, onMounted, onUpdated } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore()
-const { logoutUser, userData } = authStore
-const logoutHandler = () => {
-  logoutUser()
+const { logoutUser, userData, isError } = authStore
+
+import { useToast } from 'vue-toastification';
+const toast = useToast();
+
+const logoutHandler = async () => {
+  await logoutUser();
+  toast.success("Logout Berhasil", {
+        position: "top-right",
+        timeout: 3005,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        pauseOnHover: true,
+        draggable: true,
+        draggablePercent: 0.6,
+        showCloseButtonOnHover: false,
+        hideProgressBar: true,
+        closeButton: "button",
+        icon: true,
+        rtl: false
+    });
 }
 
 onUpdated(() => {
